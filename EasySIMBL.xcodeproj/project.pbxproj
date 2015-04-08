@@ -415,7 +415,7 @@
 				6C56449D159E7C0900215467 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		6C56449E159E7C0900215467 /* Build configuration list for PBXNativeTarget "EasySIMBL" */ = {
 			isa = XCConfigurationList;
@@ -424,7 +424,7 @@
 				6C5644A0159E7C0900215467 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
