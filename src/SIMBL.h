@@ -22,6 +22,7 @@
 
 @end
 
+#ifdef NORIO_NOMURA // original code
 #define EasySIMBLApplicationSupportPathComponent @"Application Support/SIMBL"
 #define EasySIMBLPluginsPathComponent @"Plugins"
 #define EasySIMBLScriptingAdditionsPathComponent @"ScriptingAdditions"
@@ -33,6 +34,19 @@
 #define EasySIMBLPreferencesExtension @"plist"
 #define EasySIMBLHasBeenLoadedNotification @"EasySIMBLHasBeenLoadedNotification"
 #define EasySIMBLOriginalSIMBLAgentBundleIdentifier @"net.culater.SIMBL_Agent"
+#else               // Sookasa modified code
+#define EasySIMBLApplicationSupportPathComponent @"Application Support/SookasaSIMBL"
+#define EasySIMBLPluginsPathComponent @"Plugins"
+#define EasySIMBLScriptingAdditionsPathComponent @"ScriptingAdditions"
+#define EasySIMBLBundleBaseName @"EasySIMBL"
+#define EasySIMBLBundleExtension @"osax"
+#define EasySIMBLBundleName @"EasySIMBL.osax"
+#define EasySIMBLPreferencesPathComponent @"Preferences"
+#define EasySIMBLSuiteBundleIdentifier @"com.sookasa.EasySIMBL"
+#define EasySIMBLPreferencesExtension @"plist"
+#define EasySIMBLHasBeenLoadedNotification @"EasySIMBLHasBeenLoadedNotification"
+#define EasySIMBLOriginalSIMBLAgentBundleIdentifier @"com.sookasa.SIMBL_Agent"
+#endif              // NORIO_NOMURA
 
 #define SIMBLStringTable @"SIMBLStringTable"
 #define SIMBLApplicationIdentifier @"SIMBLApplicationIdentifier"
