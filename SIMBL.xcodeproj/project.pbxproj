@@ -13,7 +13,7 @@
 		276156DC1060C08C00FEF11C /* SIMBL.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF789609B3031900F50FE7 /* SIMBL.m */; };
 		27D59F5610791EE100424BBD /* NSAlert_SIMBL.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AF789409B3031900F50FE7 /* NSAlert_SIMBL.m */; };
 		6C5154DE159DC6E500DA87F0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 276144CD105F523C00F906F6 /* InfoPlist.strings */; };
-		6CBB25FE159ECD63002C455C /* EasySIMBL.osax in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* EasySIMBL.osax */; };
+		6CBB25FE159ECD63002C455C /* EasySIMBL.osax in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D5B49B6048680CD000E48DA /* EasySIMBL.osax */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6CDFDC73159DBC65002E8E63 /* osax.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CDFDC72159DBC65002E8E63 /* osax.m */; };
 		6CDFDC75159DBC7C002E8E63 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CDFDC74159DBC7C002E8E63 /* main.m */; };
 		6CF6D4CE159DD16000916EA5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CF6D4B3159DD14100916EA5 /* Cocoa.framework */; };
@@ -206,7 +206,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0610;
 			};
 			buildConfigurationList = E0E8F445085F4D0400DCD56F /* Build configuration list for PBXProject "SIMBL" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -330,7 +330,6 @@
 		E0E8F442085F4D0400DCD56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -345,7 +344,6 @@
 		E0E8F443085F4D0400DCD56F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
