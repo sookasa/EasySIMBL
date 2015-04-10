@@ -286,6 +286,17 @@ static NSMutableDictionary* loadedBundleIdentifiers = nil;
 	NSString* appIdentifier = [runningApp bundleIdentifier];
     NSURL *bundleURL = runningApp.bundleURL;
     NSBundle *_appBundle = bundleURL ? [NSBundle bundleWithURL:bundleURL] : nil;
+    
+#ifndef NORIO_NOMURA
+    // since we delay injectSIMBL, the app may not be running when injection happens
+    if (!appIdentifier || !bundleURL || !_appBundle)
+    {
+        SIMBLLogNotice(@"1App no longer running, appIdentifier %@ bundleURL %@ _appBundle %@",
+                      appIdentifier, bundleURL, _appBundle);
+        return NO;
+    }
+#endif
+
 	for (NSDictionary* targetAppProperties in _targetApplications) {
 		NSString* targetAppIdentifier = [targetAppProperties objectForKey:SIMBLBundleIdentifier];
 		SIMBLLogDebug(@"checking target identifier %@", targetAppIdentifier);
