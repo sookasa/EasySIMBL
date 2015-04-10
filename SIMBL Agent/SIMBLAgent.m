@@ -95,9 +95,11 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             [app removeObserver:self forKeyPath:@"isFinishedLaunching"];
             if ([self.runningSandboxedApplications containsObject:app]) {
 #ifndef NORIO_NOMURA
+                NSRunningApplication *app = (NSRunningApplication*)object;
                 // injectSIMBL runs in a delay, thus uninject should cancel
                 // selectors with mathcing object
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(injectSIMBL:) object:(NSRunningApplication*)object];
+                SIMBLLogNotice(@"cancel %@ injection", app);
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(injectSIMBL:) object:app];
 #endif
                 [self injectContainerForApplication:app enabled:NO];
             }
@@ -112,7 +114,7 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
         // injection will find the app instance by the time [SIMBL installPlugins]
         // happens, injectSIMBL calls are on the same run loop, thus sequential
         NSRunningApplication *app = (NSRunningApplication*)object;
-        NSTimeInterval injectDelaySec = 5;
+        NSTimeInterval injectDelaySec = 2;
         [self performSelector:@selector(injectSIMBL:) withObject:app afterDelay:injectDelaySec];
 #endif
     }
