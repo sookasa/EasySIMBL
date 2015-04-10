@@ -315,6 +315,19 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             NSString *containerApplicationSupportPath = [NSString pathWithComponents:[NSArray arrayWithObjects:containerPath, dataLibraryPath, EasySIMBLApplicationSupportPathComponent, nil]];
             NSString *containerPlistPath = [NSString pathWithComponents:[NSArray arrayWithObjects:containerPath, dataLibraryPath,EasySIMBLPreferencesPathComponent, [EasySIMBLSuiteBundleIdentifier stringByAppendingPathExtension:EasySIMBLPreferencesExtension], nil]];
             if (bEnabled) {
+#ifndef NORIO_NOMURA
+                // if uninjection doen't happen, we may have soft links leftovers,
+                // so we remove the destinations here before linkage to refresh
+                // the pointers
+                [[NSFileManager defaultManager] fileExistsAtPath:containerScriptingAddtionsPath] && \
+                [fileManager removeItemAtPath:containerScriptingAddtionsPath error:nil];
+
+                [[NSFileManager defaultManager] fileExistsAtPath:containerApplicationSupportPath] && \
+                [fileManager removeItemAtPath:containerApplicationSupportPath error:nil];
+                
+                [[NSFileManager defaultManager] fileExistsAtPath:containerPlistPath] && \
+                [fileManager removeItemAtPath:containerPlistPath error:nil];
+#endif
                 if (![fileManager linkItemAtPath:self.scriptingAdditionsPath toPath:containerScriptingAddtionsPath error:&error]) {
                     SIMBLLogNotice(@"linkItemAtPath error:%@",error);
                 }
