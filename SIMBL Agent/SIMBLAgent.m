@@ -68,11 +68,7 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
     if ([previousInjectedSandboxBundleIdentifierSet count]) {
         [[NSProcessInfo processInfo]disableSuddenTermination];
         for (NSString *bundleItentifier in previousInjectedSandboxBundleIdentifierSet) {
-#ifdef NORIO_NOMURA
             [self injectContainerBundleIdentifier:bundleItentifier enabled:NO];
-#else
-            SIMBLLogNotice(@"skip uninject for bundleItentifier %@", bundleItentifier);
-#endif
         }
         [[NSProcessInfo processInfo]enableSuddenTermination];
     }
@@ -98,20 +94,21 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             SIMBLLogDebug(@"remove runningApp %@.", app);
             [app removeObserver:self forKeyPath:@"isFinishedLaunching"];
             if ([self.runningSandboxedApplications containsObject:app]) {
-#ifdef NORIO_NOMURA
                 [self injectContainerForApplication:app enabled:NO];
-#else
-                // uninjection of garcon plugin may make the consequent
-                // injection request fail, where [SIMBL installPlugins] simply
-                // is not called, probably a race condition between unlinking
-                // and linking the plugins into the container
-                SIMBLLogNotice(@"skip uninject for app %@", app);
-#endif
             }
         }
     } else if ([keyPath isEqualToString:@"isFinishedLaunching"] && [change[NSKeyValueChangeNewKey]boolValue]) {
         SIMBLLogDebug(@"runningApp %@ isFinishedLaunching.", object);
+#ifdef NORIO_NOMURA
         [self injectSIMBL:(NSRunningApplication*)object];
+#else
+        // if app restarts itself too fast, injection may fail, thus we delay
+        // the inject operation to give allow the app to stabilize so the
+        // injection will find the app instance by the time [SIMBL installPlugins] happen
+        NSRunningApplication *app = (NSRunningApplication*)object;
+        NSTimeInterval injectDelaySec = 5;
+        [self performSelector:@selector(injectSIMBL:) withObject:app afterDelay:injectDelaySec];
+#endif
     }
 }
 
@@ -318,7 +315,7 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
 #ifndef NORIO_NOMURA
                 // if uninjection doen't happen, we may have soft links leftovers,
                 // so we remove the destinations here before linkage to refresh
-                // the pointers
+                // the pointers, otherwise we may get linkItemAtPath warnings
                 [[NSFileManager defaultManager] fileExistsAtPath:containerScriptingAddtionsPath] && \
                 [fileManager removeItemAtPath:containerScriptingAddtionsPath error:nil];
 

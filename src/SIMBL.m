@@ -286,16 +286,6 @@ static NSMutableDictionary* loadedBundleIdentifiers = nil;
 	NSString* appIdentifier = [runningApp bundleIdentifier];
     NSURL *bundleURL = runningApp.bundleURL;
     NSBundle *_appBundle = bundleURL ? [NSBundle bundleWithURL:bundleURL] : nil;
-    
-#ifndef NORIO_NOMURA
-    // since we delay injectSIMBL, the app may not be running when injection happens
-    if (!appIdentifier || !bundleURL || !_appBundle)
-    {
-        SIMBLLogNotice(@"1App no longer running, appIdentifier %@ bundleURL %@ _appBundle %@",
-                      appIdentifier, bundleURL, _appBundle);
-        return NO;
-    }
-#endif
 
 	for (NSDictionary* targetAppProperties in _targetApplications) {
 		NSString* targetAppIdentifier = [targetAppProperties objectForKey:SIMBLBundleIdentifier];
@@ -348,6 +338,12 @@ static NSMutableDictionary* loadedBundleIdentifiers = nil;
 		if ((number = [targetAppProperties objectForKey:SIMBLMaxBundleVersion]))
 			maxVersion = [number intValue];
 		
+#ifndef NORIO_NOMURA
+        // since we delay injectSIMBL, the app may not be running when injection
+        // happens, add this extra check to avoid wrong warning for version
+        // mismatch when app bundle is not set
+        if (_appBundle)
+#endif
 		if ((maxVersion && appVersion > maxVersion) || (minVersion && appVersion < minVersion))
 		{
 			[NSAlert errorAlert:NSLocalizedStringFromTableInBundle(@"Error", SIMBLStringTable, [NSBundle bundleForClass:[self class]], @"Error alert primary message") withDetails:NSLocalizedStringFromTableInBundle(@"%@ %@ (v%@) has not been tested with the plugin %@ %@ (v%@). As a precaution, it has not been loaded. Please contact the plugin developer for further information.", SIMBLStringTable, [NSBundle bundleForClass:[self class]], @"Error alert details, substitute application and plugin version strings"), [_appBundle _dt_name], [_appBundle _dt_version], [_appBundle _dt_bundleVersion], [_bundle _dt_name], [_bundle _dt_version], [_bundle _dt_bundleVersion]];

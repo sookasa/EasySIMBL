@@ -46,7 +46,7 @@
 #define EasySIMBLPreferencesExtension @"plist"
 #define EasySIMBLHasBeenLoadedNotification @"EasySIMBLHasBeenLoadedNotification"
 #define EasySIMBLOriginalSIMBLAgentBundleIdentifier @"com.sookasa.SIMBL_Agent"
-#endif              // NORIO_NOMURA
+#endif
 
 #define SIMBLStringTable @"SIMBLStringTable"
 #define SIMBLApplicationIdentifier @"SIMBLApplicationIdentifier"
