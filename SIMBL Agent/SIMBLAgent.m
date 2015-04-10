@@ -109,7 +109,8 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
 #else
         // if app restarts itself too fast, injection may fail, thus we delay
         // the inject operation to give allow the app to stabilize so the
-        // injection will find the app instance by the time [SIMBL installPlugins] happen
+        // injection will find the app instance by the time [SIMBL installPlugins]
+        // happens, injectSIMBL calls are on the same run loop, thus sequential
         NSRunningApplication *app = (NSRunningApplication*)object;
         NSTimeInterval injectDelaySec = 5;
         [self performSelector:@selector(injectSIMBL:) withObject:app afterDelay:injectDelaySec];
