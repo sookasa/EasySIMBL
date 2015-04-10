@@ -68,7 +68,11 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
     if ([previousInjectedSandboxBundleIdentifierSet count]) {
         [[NSProcessInfo processInfo]disableSuddenTermination];
         for (NSString *bundleItentifier in previousInjectedSandboxBundleIdentifierSet) {
+#ifdef NORIO_NOMURA
             [self injectContainerBundleIdentifier:bundleItentifier enabled:NO];
+#else
+            SIMBLLogNotice(@"skip uninject for bundleItentifier %@", bundleItentifier);
+#endif
         }
         [[NSProcessInfo processInfo]enableSuddenTermination];
     }
@@ -101,7 +105,7 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
                 // injection request fail, where [SIMBL installPlugins] simply
                 // is not called, probably a race condition between unlinking
                 // and linking the plugins into the container
-                SIMBLLogDebug(@"skip uninject");
+                SIMBLLogNotice(@"skip uninject for app %@", app);
 #endif
             }
         }
@@ -321,7 +325,11 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
                     SIMBLLogNotice(@"linkItemAtPath error:%@",error);
                 }
                 bResult = YES;
+#ifdef NORIO_NOMURA
                 SIMBLLogDebug(@"%@'s container has been injected.", bundleIdentifier);
+#else
+                SIMBLLogNotice(@"%@'s container has been injected.", bundleIdentifier);
+#endif
             } else {
                 if (![fileManager removeItemAtPath:containerScriptingAddtionsPath error:&error]) {
                     SIMBLLogNotice(@"removeItemAtPath error:%@",error);
@@ -333,7 +341,11 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
                     SIMBLLogNotice(@"removeItemAtPath error:%@",error);
                 }
                 bResult = YES;
+#ifdef NORIO_NOMURA
                 SIMBLLogDebug(@"%@'s container has been uninjected.", bundleIdentifier);
+#else
+                SIMBLLogNotice(@"%@'s container has been uninjected.", bundleIdentifier);
+#endif
             }
         }
     }
