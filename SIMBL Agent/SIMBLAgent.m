@@ -94,6 +94,11 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             SIMBLLogDebug(@"remove runningApp %@.", app);
             [app removeObserver:self forKeyPath:@"isFinishedLaunching"];
             if ([self.runningSandboxedApplications containsObject:app]) {
+#ifndef NORIO_NOMURA
+                // injectSIMBL runs in a delay, thus uninject should cancel
+                // selectors with mathcing object
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(injectSIMBL:) object:(NSRunningApplication*)object];
+#endif
                 [self injectContainerForApplication:app enabled:NO];
             }
         }
