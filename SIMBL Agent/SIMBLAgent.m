@@ -94,7 +94,15 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             SIMBLLogDebug(@"remove runningApp %@.", app);
             [app removeObserver:self forKeyPath:@"isFinishedLaunching"];
             if ([self.runningSandboxedApplications containsObject:app]) {
+#ifdef NORIO_NOMURA
                 [self injectContainerForApplication:app enabled:NO];
+#else
+                // uninjection of garcon plugin may make the consequent
+                // injection request fail, where [SIMBL installPlugins] simply
+                // is not called, probably a race condition between unlinking
+                // and linking the plugins into the container
+                SIMBLLogDebug(@"skip uninject");
+#endif
             }
         }
     } else if ([keyPath isEqualToString:@"isFinishedLaunching"] && [change[NSKeyValueChangeNewKey]boolValue]) {
