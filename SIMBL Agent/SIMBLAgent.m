@@ -95,10 +95,10 @@ NSString * const kInjectedSandboxBundleIdentifiers = @"InjectedSandboxBundleIden
             [app removeObserver:self forKeyPath:@"isFinishedLaunching"];
             if ([self.runningSandboxedApplications containsObject:app]) {
 #ifndef NORIO_NOMURA
-                NSRunningApplication *app = (NSRunningApplication*)object;
+                //NSRunningApplication *app = (NSRunningApplication*)object;
                 // injectSIMBL runs in a delay, thus uninject should cancel
-                // selectors with mathcing object
-                SIMBLLogNotice(@"cancel %@ injection", app);
+                // selectors with matching object
+                SIMBLLogNotice(@"cancel %@ injection", [app localizedName]);
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(injectSIMBL:) object:app];
 #endif
                 [self injectContainerForApplication:app enabled:NO];
